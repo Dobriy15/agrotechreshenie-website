@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ service.title }} — АгроТехРешение, Минск{% endblock %}
+{% block og_title %}{{ service.title }} — АгроТехРешение{% endblock %}
+{% block description %}{{ service.text_html|striptags|truncatechars:160 }}{% endblock %}
+{% block og_description %}{{ service.text_html|striptags|truncatechars:160 }}{% endblock %}
+{% block body_class %}page-inner{% endblock %}
+{% block content %}
+<section class="service marble">
+  <nav class="crumbs" aria-label="Навигация">
+    <a href="{% url 'home' %}">Главная</a> / <a href="{{ service.category.get_absolute_url }}">{{ service.category.title }}</a>
+  </nav>
+  <h1 class="section-title">{{ service.title }}</h1>
+  <div class="service__body">
+    <div class="service__text">{{ service.text_html|safe }}</div>
+    {% if media %}
+    <div class="service__media">
+      <div class="swiper js-slider" data-delay="{{ service.autoplay_seconds }}000">
+        <div class="swiper-wrapper">
+          {% for m in media %}
+          {% if m.video %}
+          <div class="swiper-slide slide slide--video" data-swiper-autoplay="11000">
+            <video src="{{ m.video.url }}" muted loop playsinline preload="metadata"></video>
+          </div>
+          {% elif m.image %}
+          <div class="swiper-slide slide"{% if forloop.first %} style="--bg:url('{{ m.thumb.url }}')"{% endif %}>
+            <img {% if forloop.first %}src{% else %}data-src{% endif %}="{{ m.thumb.url }}" {% if forloop.first %}srcset{% else %}data-srcset{% endif %}="{{ m.thumb.url }} 900w, {{ m.image.url }} 1920w" sizes="(max-width:900px) 100vw, 40vw" alt="{{ service.title }} — фото {{ forloop.counter }}">
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

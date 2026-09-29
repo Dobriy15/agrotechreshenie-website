@@ -1,0 +1,9 @@
+{% load static %}{# карточка: url, image, title, button, disabled #}
+{% if disabled %}<div class="card card--disabled">{% else %}<a class="card" href="{{ url }}">{% endif %}
+  <img class="card__img" src="{{ image }}" alt="{{ title }}" loading="lazy">
+  <span class="card__frame">
+    <img class="card__logo" src="{% static 'img/logo.png' %}" alt="">
+    <span class="card__title">{{ title }}</span>
+    <span class="card__btn">{{ button }}</span>
+  </span>
+{% if disabled %}</div>{% else %}</a>{% endif %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ category.title }} — АгроТехРешение{% endblock %}
+{% block og_title %}{{ category.title }} — АгроТехРешение{% endblock %}
+{% block body_class %}page-inner{% endblock %}
+{% block content %}
+<section class="services services--page marble">
+  <h1 class="section-title">{{ site.services_title }}</h1>
+  <div class="cards">
+    {% for s in services %}
+      {% include "partials/card.html" with url=s.get_absolute_url image=s.card_image_url title=s.card_label button="Узнать подробнее" %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

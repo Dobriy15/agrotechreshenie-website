@@ -1,0 +1,21 @@
+# Environment
+.env
+.venv/
+venv/
+
+# Django
+media/
+staticfiles/
+*.sqlite3
+
+# Client photo archive (large, imported via `manage.py seed`)
+фото сайт/
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

@@ -1,0 +1,87 @@
+{% extends "base.html" %}{% load static %}
+{% block body_class %}page-home{% endblock %}
+{% block head %}{% if site.hero_image %}<link rel="preload" as="image" href="{{ site.hero_image.url }}">{% endif %}{% endblock %}
+
+{% block header %}
+<header class="header header--over">
+  <div class="header__inner">
+    <a class="header__logo" href="{% url 'home' %}" aria-label="На главную"><img src="{% static 'img/logo.png' %}" alt="АгроТехРешение"></a>
+    {% include "partials/nav.html" %}
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<section class="hero" id="top"{% if site.hero_image %} style="background-image:url('{{ site.hero_image.url }}')"{% endif %}>
+  <div class="hero__content">
+    <h1 class="hero__title">{{ site.hero_title }}</h1>
+    <p class="hero__subtitle">{{ site.hero_subtitle }}</p>
+  </div>
+</section>
+
+{% if stats %}
+<section class="stats" aria-label="Цифры компании">
+  {% for s in stats %}
+  <div class="stats__item"><div class="stats__value">{{ s.value }}</div><div class="stats__label">{{ s.label }}</div></div>
+  {% endfor %}
+</section>
+{% endif %}
+
+<section class="services marble" id="services">
+  <h2 class="section-title">{{ site.services_title }}</h2>
+  <div class="cards">
+    {% for c in categories %}
+      {% if c.is_active %}
+        {% include "partials/card.html" with url=c.get_absolute_url image=c.image.url title=c.title button="Узнать подробнее" %}
+      {% else %}
+        {% include "partials/card.html" with image=c.image.url title=c.title button=c.get_status_display disabled=True %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about__inner">
+    <h2 class="about__title">{{ site.about_title }}</h2>
+    <div class="about__text">{{ site.about_html|safe }}</div>
+  </div>
+</section>
+
+{% if reviews %}
+<section class="reviews marble" id="reviews">
+  <div class="reviews__head">
+    <div class="reviews__kicker">Доверие</div>
+    <h2 class="reviews__title">Отзывы наших<br>клиентов</h2>
+  </div>
+  <div class="reviews__list">
+    {% for r in reviews %}
+    <article class="review">
+      <p class="review__text">{{ r.text }}</p>
+      <div class="review__name">{{ r.name }}</div>
+      {% if r.role %}<div class="review__role">{{ r.role }}</div>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="contacts" id="contacts">
+  <iframe class="contacts__map" title="Карта: производство АгроТехРешение" loading="lazy" tabindex="-1"
+    src="https://yandex.by/map-widget/v1/?ll={{ site.map_lon|stringformat:'f' }}%2C{{ site.map_lat|stringformat:'f' }}&z=12&pt={{ site.map_lon|stringformat:'f' }}%2C{{ site.map_lat|stringformat:'f' }}%2Cpm2rdl"></iframe>
+  <a class="contacts__route" target="_blank" rel="noopener"
+     href="https://yandex.by/maps/?rtext=~{{ site.map_lat|stringformat:'f' }}%2C{{ site.map_lon|stringformat:'f' }}&rtt=auto"
+     aria-label="Построить маршрут до производства в Яндекс Картах">
+    <span class="contacts__route-chip">Построить маршрут до производства →</span>
+  </a>
+  <div class="contacts__card">
+    <h2 class="contacts__title">Наша контактная информация</h2>
+    {% if site.production_address %}<h3>Адрес производства:</h3><ul><li>{{ site.production_address }}</li></ul>{% endif %}
+    {% if site.office_address %}<h3>Адрес офиса:</h3><ul><li>{{ site.office_address }}</li></ul>{% endif %}
+    <h3>Номера телефонов:</h3>
+    <ul class="contacts__phones">
+      {% if site.phone_1 %}<li><a href="tel:{{ site.phone_1 }}">{{ site.phone_1 }}</a></li>{% endif %}
+      {% if site.phone_2 %}<li><a href="tel:{{ site.phone_2 }}">{{ site.phone_2 }}</a></li>{% endif %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

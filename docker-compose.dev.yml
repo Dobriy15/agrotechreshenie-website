@@ -1,0 +1,13 @@
+# Только Postgres для локальной разработки: docker compose -f docker-compose.dev.yml up -d
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: atr
+      POSTGRES_USER: atr
+      POSTGRES_PASSWORD: atr
+    ports: ["55432:5432"]
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+volumes:
+  pgdata_dev:
